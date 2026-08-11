@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-1: #f8f4ec;
+            --bg-2: #e9f0ff;
+            --card: #fffdf9;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --accent: #0b7285;
+            --accent-dark: #075985;
+            --ring: rgba(11, 114, 133, 0.2);
+            --nav-bg: rgba(255, 255, 255, 0.76);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px 18px 48px;
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 12% 14%, #ffffffcc 0 22%, transparent 23%),
+                radial-gradient(circle at 88% 90%, #dbeafe 0 24%, transparent 25%),
+                linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        }
+
+        .nav-links {
+            max-width: 1000px;
+            margin: 0 auto 18px;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            background: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 10px;
+            z-index: 20;
+        }
+
+        .nav-links a {
+            color: #475569;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 8px;
+            transition: background-color 160ms ease, color 160ms ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: rgba(11, 114, 133, 0.14);
+            color: #0f172a;
+        }
+
+        body::before {
+            content: "All Courses Data";
+            display: block;
+            font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            margin: 0 auto 20px;
+            max-width: 1000px;
+        }
+
+        body > div {
+            max-width: 1000px;
+            margin: 0 auto 14px;
+            padding: 16px 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            background: var(--card);
+            box-shadow: 0 12px 24px -20px var(--ring);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            animation: cardIn 380ms ease both;
+        }
+
+        body > div p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+            font-size: 0.98rem;
+            word-break: break-word;
+        }
+
+        body > div p strong {
+            color: #1e293b;
+        }
+
+        body > div .show-more-link {
+            display: inline-block;
+            border: 0;
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: var(--accent);
+            color: #ffffff;
+            text-decoration: none;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+            white-space: nowrap;
+        }
+
+        body > div .show-more-link:hover {
+            transform: translateY(-1px);
+            background: var(--accent-dark);
+            box-shadow: 0 8px 16px -12px #0c4a6e;
+        }
+
+        body > div .show-more-link:active {
+            transform: translateY(0);
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 22px 12px 34px;
+            }
+
+            .nav-links {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            body > div {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            body > div .show-more-link {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-links" id="site-nav">
+        <a href="home">Home</a>
+        <a class="active" href="courses">Courses</a>
+        <a href="about">About</a>
+        <a href="contact">Contact</a>
+    </nav>
+
+    <script>
+        fetch('/getallcoursesdatajson')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            
+            data.forEach((data) => {
+                let div = document.createElement("div");
+                div.innerHTML = `<p><strong>Category:</strong> ${data.category}<br>
+                    <strong>Course:</strong> ${data.course_name}<br>
+                    <strong>Duration:</strong> ${data.duration}<br>
+                    <strong>Price:</strong> ${data.course_price}<br>
+                    <strong>Instructor:</strong> ${data.instructor_name}</p>
+                    <a class="show-more-link" href="perticularcourse/${data.course_id}">Show More</a>`;
+                document.body.appendChild(div);
+                })
+            })
+    </script>
+</body>
+</html>

@@ -3,9 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>EdStar | Learn Smarter</title>
+    <style>
+        :root {
+            --bg: #0b1120;
+            --bg-soft: #10192f;
+            --panel: rgba(15, 23, 42, 0.72);
+            --panel-strong: #121c33;
+            --text: #edf2ff;
+            --muted: #a7b3d1;
+            --accent: #22c55e;
+            --accent-2: #60a5fa;
+            --border: rgba(148, 163, 184, 0.18);
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(34, 197, 94, 0.18), transparent 24%),
+                linear-gradient(180deg, #08101f 0%, #0b1120 48%, #070b14 100%);
+            min-height: 100vh;
+        }
+
+        .page {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 20px 0 56px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 16px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(11, 17, 32, 0.72);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            backdrop-filter: blur(18px);
+            box-shadow: var(--shadow);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: #07111f;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), #86efac);
+            box-shadow: 0 10px 24px rgba(34, 197, 94, 0.28);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-radius: 999px;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible,
+        .nav-links a.active {
+            color: var(--text);
+            background: rgba(96, 165, 250, 0.14);
+            outline: none;
+        }
+
+        .menu-button {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            margin-top: 28px;
+            padding: 84px 28px 72px;
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            background:
+                linear-gradient(180deg, rgba(16, 25, 47, 0.88), rgba(7, 11, 20, 0.86)),
+                radial-gradient(circle at 20% 15%, rgba(96, 165, 250, 0.18), transparent 30%),
+                radial-gradient(circle at 80% 0%, rgba(34, 197, 94, 0.14), transparent 25%);
+            box-shadow: var(--shadow);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 82%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+            gap: 32px;
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border: 1px solid rgba(96, 165, 250, 0.22);
+            border-radius: 999px;
+            color: #dbeafe;
+            background: rgba(59, 130, 246, 0.08);
+            font-size: 0.92rem;
+        }
+
+        .eyebrow-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.15);
+        }
+
+        h1 {
+            margin: 20px 0 16px;
+            font-size: clamp(2.8rem, 6vw, 5.2rem);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            max-width: 11ch;
+        }
+
+        .hero p {
+            margin: 0;
+            max-width: 58ch;
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 0 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            color: #06111d;
+            background: linear-gradient(135deg, var(--accent), #86efac);
+            box-shadow: 0 18px 32px rgba(34, 197, 94, 0.24);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .hero-card {
+            padding: 24px;
+            border: 1px solid rgba(148, 163, 184, 0.16);
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(18, 28, 51, 0.94), rgba(9, 14, 25, 0.92));
+        }
+
+        .hero-card h2 {
+            margin: 0 0 12px;
+            font-size: 1.2rem;
+        }
+
+        .hero-card p {
+            margin-bottom: 18px;
+            font-size: 0.98rem;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .stat {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 6px;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .floating-pill {
+            position: absolute;
+            right: 26px;
+            bottom: 26px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(96, 165, 250, 0.22);
+            background: rgba(59, 130, 246, 0.1);
+            color: #dbeafe;
+            font-weight: 700;
+            backdrop-filter: blur(14px);
+        }
+
+        @media (max-width: 860px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+
+            .menu-button {
+                display: inline-flex;
+            }
+
+            .nav-links {
+                width: 100%;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                padding-top: 8px;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 12px 14px;
+            }
+
+            .hero {
+                padding: 56px 20px 24px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                max-width: 14ch;
+            }
+
+            .floating-pill {
+                position: static;
+                display: inline-flex;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page {
+                width: min(100% - 18px, 1180px);
+                padding-top: 10px;
+            }
+
+            .navbar {
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            .hero {
+                margin-top: 18px;
+                border-radius: 24px;
+            }
+
+            .mini-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class = navbar></div>
+    <div class="page">
+        <header class="navbar">
+            <a class="brand" href="home.html" aria-label="EdStar home">
+                <span class="brand-mark">E</span>
+                <span>EdStar</span>
+            </a>
+
+            <button class="menu-button" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
+                ☰
+            </button>
+
+            <nav class="nav-links" id="site-nav">
+                <a class="active" href="/home">Home</a>
+                <a href="/courses">Courses</a>
+                <a href="/about">About</a>
+                <a href="/contact">Contact</a>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <div class="hero-grid">
+                <section>
+                    <div class="eyebrow"><span class="eyebrow-dot"></span> Build skills that matter</div>
+                    <h1>Learn smarter, grow faster.</h1>
+                    <p>
+                        EdStar brings practical, career-focused learning into one clean space.
+                        Explore guided lessons, sharpen your skills, and move from curiosity to confidence.
+                    </p>
+                    <div class="actions">
+                        <a class="btn btn-primary" href="courses.html">Explore Courses</a>
+                        <a class="btn btn-secondary" href="aboutus.html">Know More</a>
+                    </div>
+                </section>
+
+                <aside class="hero-card">
+                    <h2>Why students choose EdStar</h2>
+                    <p>
+                        Simple learning paths, focused content, and a clear route from first lesson to real progress.
+                    </p>
+
+                    <div class="mini-stats">
+                        <div class="stat">
+                            <strong>120+</strong>
+                            <span>Lessons designed for steady growth</span>
+                        </div>
+                        <div class="stat">
+                            <strong>24/7</strong>
+                            <span>Learn whenever your schedule allows</span>
+                        </div>
+                        <div class="stat">
+                            <strong>8+</strong>
+                            <span>Learning tracks to explore</span>
+                        </div>
+                        <div class="stat">
+                            <strong>1 goal</strong>
+                            <span>Turn learning into results</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <div class="floating-pill">Trusted learning. Clear direction.</div>
+        </main>
+    </div>
+
+    <script>
+        const menuButton = document.querySelector('.menu-button');
+        const navigation = document.querySelector('.nav-links');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        if (menuButton && navigation) {
+            menuButton.addEventListener('click', () => {
+                const isOpen = navigation.classList.toggle('open');
+                menuButton.setAttribute('aria-expanded', String(isOpen));
+            });
+        }
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                if (navigation && navigation.classList.contains('open')) {
+                    navigation.classList.remove('open');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

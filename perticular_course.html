@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Course Details</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 20px;
+		}
+
+		.course-container {
+			background: white;
+			border-radius: 10px;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+			padding: 40px;
+			max-width: 600px;
+			width: 100%;
+		}
+
+		.course-header {
+			margin-bottom: 30px;
+			border-bottom: 3px solid #667eea;
+			padding-bottom: 20px;
+		}
+
+		.course-header h1 {
+			color: #333;
+			font-size: 28px;
+			margin-bottom: 10px;
+		}
+
+		.course-details {
+			color: #555;
+			line-height: 1.8;
+			font-size: 16px;
+		}
+
+		.course-details p {
+			margin-bottom: 15px;
+		}
+
+		strong {
+			color: #667eea;
+			font-weight: 600;
+		}
+
+		.enroll-btn {
+			display: inline-block;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 12px 30px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin-top: 20px;
+			width: 100%;
+		}
+
+		.enroll-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+		}
+
+		.enroll-btn:active {
+			transform: translateY(0);
+		}
+	</style>
+</head>
+<body>
+	<script>
+		let splitedurl = window.location.href.split('/');
+		fetch('/course/' + splitedurl[splitedurl.length - 1]).then(data => {
+			return data.json();
+		}).then(courseData => {
+			console.log(courseData);
+			
+			let container = document.createElement("div");
+			container.className = "course-container";
+			
+			let header = document.createElement("div");
+			header.className = "course-header";
+			header.innerHTML = `<h1>Course Details</h1>`;
+			
+			let details = document.createElement("div");
+			details.className = "course-details";
+			details.innerHTML = `
+				<p><strong>Category:</strong> ${courseData.category}<br>
+				<strong>Course:</strong> ${courseData.course_name}<br>
+				<strong>Duration:</strong> ${courseData.duration}<br>
+				<strong>Price:</strong> $${courseData.course_price}<br>
+				<strong>Instructor:</strong> ${courseData.instructor_name}</p>`;
+			
+			let enrollBtn = document.createElement("button");
+			enrollBtn.className = "enroll-btn";
+			enrollBtn.textContent = "Enroll Now";
+			enrollBtn.onclick = function() {
+				alert("Enrolled successfully in " + courseData.course_name);
+				// You can add API call here to register the course
+			};
+			
+			container.appendChild(header);
+			container.appendChild(details);
+			container.appendChild(enrollBtn);
+			document.body.appendChild(container);
+		});
+	</script>
+</body>
+</html>
